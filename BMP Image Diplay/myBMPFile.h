@@ -2,6 +2,8 @@
 #include "wx/wx.h"
 #include "wx/string.h"
 #include "wx/wfstream.h"
+#include <vector>
+using namespace std;
 
 class myBMPFile : public wxFFile
 {
@@ -10,8 +12,8 @@ public:
 	~myBMPFile();
 	wxSize getImageSize();
 	bool readMetaData();
+	void readImageData();
 	
-
 private:
 	bool readFileHeader();
 	bool readInfoHeader();
@@ -25,7 +27,6 @@ private:
 	unsigned int numberOfPlanes;
 	unsigned int bitsPerPixel;
 	unsigned int compressionFactor;
-
-
+	vector<wxColor> *pixelArray;
 };
 

@@ -14,7 +14,7 @@ myBMPFile::myBMPFile(const wxString filepath)
 }
 
 myBMPFile::~myBMPFile() {
-
+    delete pixelArray;
 }
 
 wxSize myBMPFile::getImageSize()
@@ -27,6 +27,35 @@ bool myBMPFile::readMetaData() {
         return false;
     }
     return true;
+}
+
+// Create a temporary vector of enough size to store pixel data
+// Then allocate a color vector of exact pixel count and copy.
+void myBMPFile::readImageData()
+{
+    //Calculate size of byte padding;
+    unsigned int bytesPerRow = imageWidth * bitsPerPixel / 8;
+    unsigned int bytePadding = bytesPerRow % 4;
+    char *paddingBuffer = new char[bytePadding];
+
+    int i = 0;
+    unsigned int pixelCount = 0;
+    uint8_t Red;
+    uint8_t Green;
+    uint8_t Blue;
+    pixelArray = new vector<wxColor>(fileSize/3);
+    vector<wxColor>::iterator index = pixelArray->begin();
+    while (!Eof() || index != pixelArray->end()) {
+        Read(&Red, 1);
+        Read(&Green, 1);
+        Read(&Blue, 1);
+        Read(paddingBuffer, bytePadding);
+        *index = wxColor(Red, Green, Blue);
+        index++, pixelCount++;
+    }
+    pixelArray->resize(pixelCount);
+    delete[] paddingBuffer;
+    Close();
 }
 
 bool myBMPFile::readFileHeader()
@@ -79,6 +108,5 @@ bool myBMPFile::readInfoHeader()
     if (numberOfPlanes != 1) {
         wxMessageBox("Warning: Loading non-standard color planes.");
     }
-    Close();
     return true;
 }

@@ -23,6 +23,7 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 			maxWidth = GetSize().x;
 			maxHeight = GetSize().y;
 		}
+		bmpFile->readImageData();
 	}
 	else {
 		wxMessageBox("Error: Selected file not open for reading.");
