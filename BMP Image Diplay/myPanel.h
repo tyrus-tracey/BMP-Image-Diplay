@@ -13,7 +13,7 @@ class myPanel : public wxPanel
 public:
 	myPanel(wxFrame* parent, const wxString filepath);
 	~myPanel();
-
+	void resizeToImage();
 	void paintEvent(wxPaintEvent& event);
 	void drawImage(wxDC& dc);
 	myBMPFile* getFile();
@@ -25,7 +25,6 @@ private:
 	wxSize maxSize;
 	int	maxHeight;
 	int maxWidth;
-	bool loaded = false;
 
 	DECLARE_EVENT_TABLE();
 };

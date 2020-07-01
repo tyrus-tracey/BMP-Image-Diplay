@@ -17,11 +17,12 @@ myBMPFile::~myBMPFile() {
 
 }
 
+wxSize myBMPFile::getImageSize()
+{
+    return wxSize(imageWidth, imageHeight);
+}
+
 bool myBMPFile::readMetaData() {
-    if (!IsOpened()) {
-        wxMessageBox("Error: File could not be read.");
-        return false;
-    }
     if (!readFileHeader() | !readInfoHeader()) {
         return false;
     }
@@ -78,6 +79,6 @@ bool myBMPFile::readInfoHeader()
     if (numberOfPlanes != 1) {
         wxMessageBox("Warning: Loading non-standard color planes.");
     }
-
+    Close();
     return true;
 }

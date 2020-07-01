@@ -15,16 +15,28 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 	if (bmpFile == NULL) {
 		wxMessageBox("Error: Could not find associated BMP file.");
 	}
-	maxSize = parent->GetSize();
-	SetSize(maxSize);
-	maxHeight = maxSize.y;
-	maxWidth = maxSize.x;
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
+
+	if (bmpFile->IsOpened()) {
+		if (bmpFile->readMetaData()) {
+			resizeToImage();
+			maxWidth = GetSize().x;
+			maxHeight = GetSize().y;
+		}
+	}
+	else {
+		wxMessageBox("Error: Selected file not open for reading.");
+	}
 }
 
 myPanel::~myPanel()
 {
 	delete bmpFile; //required to delete manually allocated elements of myBMPFile
+}
+
+void myPanel::resizeToImage()
+{
+	SetSize(bmpFile->getImageSize());
 }
 
 // 'dc' is a device context (the screen) that is used for drawing on the panel
@@ -44,10 +56,8 @@ void myPanel::drawImage(wxDC& dc)
 	pen.SetColour(wxColour(100, 150, 200));
 	dc.SetPen(pen);
 	dc.SetBrush(brush);
-
-	if (bmpFile->readMetaData()) {
-		wxMessageBox("Successful Read.");
-	}
+	
+	
 
 	return;
 }

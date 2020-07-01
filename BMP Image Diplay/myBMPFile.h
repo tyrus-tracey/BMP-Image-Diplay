@@ -8,7 +8,7 @@ class myBMPFile : public wxFFile
 public:
 	myBMPFile(const wxString filepath);
 	~myBMPFile();
-	
+	wxSize getImageSize();
 	bool readMetaData();
 	
 

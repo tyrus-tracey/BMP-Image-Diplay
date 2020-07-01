@@ -70,6 +70,6 @@ void myFrame::OnOpen(wxCommandEvent& event)
 
 	panel = new myPanel(this, openDialog.GetPath()); // Create a new panel with given wave file
 	GetSizer()->Add(panel, 1, wxEXPAND); // Add the panel to the frame's sizer
-
+	SetSize(panel->GetSize());
 	Refresh(); //Redraw the frame
 }
