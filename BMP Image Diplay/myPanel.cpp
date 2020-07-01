@@ -12,7 +12,7 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 	: wxPanel(parent, wxID_ANY, wxPoint(0, 0), parent->GetSize())
 {
 	bmpFile = new myBMPFile(filepath);
-	if (wavFile == NULL) {
+	if (bmpFile == NULL) {
 		wxMessageBox("Error: Could not find associated BMP file.");
 	}
 	maxSize = parent->GetSize();
@@ -24,7 +24,7 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 
 myPanel::~myPanel()
 {
-	delete bmpFile; //required to delete manually allocated elements of myWaveFile
+	delete bmpFile; //required to delete manually allocated elements of myBMPFile
 }
 
 // 'dc' is a device context (the screen) that is used for drawing on the panel
@@ -32,11 +32,11 @@ void myPanel::paintEvent(wxPaintEvent& event)
 {
 	wxBufferedPaintDC dc(this);
 	PrepareDC(dc);
-	drawBackground(dc);
+	drawImage(dc);
 }
 
 // Prepare a clean background to draw the waveform on.
-void myPanel::drawBackground(wxDC& dc)
+void myPanel::drawImage(wxDC& dc)
 {
 	wxBrush brush = dc.GetBrush();	// Rectangle body 
 	wxPen pen = dc.GetPen();		// Rectangle border
@@ -44,9 +44,10 @@ void myPanel::drawBackground(wxDC& dc)
 	pen.SetColour(wxColour(100, 150, 200));
 	dc.SetPen(pen);
 	dc.SetBrush(brush);
-	dc.DrawRectangle(wxRect(maxSize));	//	Since this is purely a visual element,
-										//	I should be allowed this convenience and not have to 
-										//	manually draw a rectangle.
+
+	if (bmpFile->readMetaData()) {
+		wxMessageBox("Successful Read.");
+	}
 
 	return;
 }

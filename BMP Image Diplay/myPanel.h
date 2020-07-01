@@ -15,7 +15,7 @@ public:
 	~myPanel();
 
 	void paintEvent(wxPaintEvent& event);
-	void drawBackground(wxDC& dc);
+	void drawImage(wxDC& dc);
 	myBMPFile* getFile();
 
 private:
