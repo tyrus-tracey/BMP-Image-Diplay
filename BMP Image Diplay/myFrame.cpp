@@ -56,7 +56,7 @@ void myFrame::OnExit(wxCommandEvent& event) {
 	Close(true); // Stop displaying
 }
 
-// If user selects a wave file, a new panel will be created using that file.
+// If user selects a BMP file, a new panel will be created using that file.
 // Then, that panel will be attached to the frame using the frame's sizer.
 void myFrame::OnOpen(wxCommandEvent& event)
 {
@@ -72,4 +72,6 @@ void myFrame::OnOpen(wxCommandEvent& event)
 	GetSizer()->Add(panel, 1, wxEXPAND); // Add the panel to the frame's sizer
 	SetSize(panel->GetSize());
 	Refresh(); //Redraw the frame
+	Update(); //Force painting of BMP immediately
+	Freeze(); //Image drawn; freeze to prevent repeat paint events.
 }

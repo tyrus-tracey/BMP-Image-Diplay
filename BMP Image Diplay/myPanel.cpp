@@ -61,8 +61,6 @@ void myPanel::drawImage(wxDC& dc)
 			dc.DrawPoint(col, maxHeight - row - 1);
 		}
 	}
-	
-
 	return;
 }
 

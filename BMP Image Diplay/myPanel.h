@@ -21,7 +21,6 @@ public:
 private:
 
 	myBMPFile* bmpFile;
-
 	wxSize maxSize;
 	int	maxHeight;
 	int maxWidth;
