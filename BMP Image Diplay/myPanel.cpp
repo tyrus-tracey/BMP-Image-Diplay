@@ -20,8 +20,6 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 	if (bmpFile->IsOpened()) {
 		if (bmpFile->readMetaData()) {
 			resizeToImage();
-			maxWidth = GetSize().x;
-			maxHeight = GetSize().y;
 			bmpFile->readImageData();
 		}
 	}
@@ -37,6 +35,7 @@ myPanel::~myPanel()
 
 void myPanel::resizeToImage()
 {
+	wxSize test = bmpFile->getImageSize();
 	SetSize(bmpFile->getImageSize());
 	maxWidth = GetSize().x;
 	maxHeight = GetSize().y;

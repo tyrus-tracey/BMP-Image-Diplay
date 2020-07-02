@@ -6,10 +6,6 @@ myFrame::myFrame(wxSize& appDimensions)
 	: wxFrame(NULL, wxID_ANY, "BMP Image Program", wxPoint(0, 0), appDimensions), panel(NULL)
 {
 	createMenuBar();
-
-	frameSizer = new wxBoxSizer(wxHORIZONTAL); //Sizers handle spacing of elements within frame
-	SetSizer(frameSizer);
-	SetAutoLayout(true);
 	Show(true); // Display this frame
 }
 
@@ -31,8 +27,6 @@ void myFrame::createMenuBar() {
 	menuBar->Append(menuHelp, "&Help");
 
 	SetMenuBar(menuBar);
-	CreateStatusBar();
-	SetStatusText("This is the Status Bar.");
 
 	Bind(wxEVT_MENU, &myFrame::OnOpen, this, ID_Open);
 	Bind(wxEVT_MENU, &myFrame::OnAbout, this, wxID_ABOUT);
@@ -69,8 +63,9 @@ void myFrame::OnOpen(wxCommandEvent& event)
 	}
 
 	panel = new myPanel(this, openDialog.GetPath()); // Create a new panel with given wave file
-	GetSizer()->Add(panel, 1, wxEXPAND); // Add the panel to the frame's sizer
-	SetSize(panel->GetSize());
+	SetClientSize(panel->GetSize());
+	wxSize test = panel->GetSize();
+	Fit();
 	Refresh(); //Redraw the frame
 	Update(); //Force painting of BMP immediately
 	Freeze(); //Image drawn; freeze to prevent repeat paint events.
