@@ -22,8 +22,8 @@ myPanel::myPanel(wxFrame* parent, const wxString filepath)
 			resizeToImage();
 			maxWidth = GetSize().x;
 			maxHeight = GetSize().y;
+			bmpFile->readImageData();
 		}
-		bmpFile->readImageData();
 	}
 	else {
 		wxMessageBox("Error: Selected file not open for reading.");
@@ -38,6 +38,8 @@ myPanel::~myPanel()
 void myPanel::resizeToImage()
 {
 	SetSize(bmpFile->getImageSize());
+	maxWidth = GetSize().x;
+	maxHeight = GetSize().y;
 }
 
 // 'dc' is a device context (the screen) that is used for drawing on the panel
@@ -51,13 +53,14 @@ void myPanel::paintEvent(wxPaintEvent& event)
 // Prepare a clean background to draw the waveform on.
 void myPanel::drawImage(wxDC& dc)
 {
-	wxBrush brush = dc.GetBrush();	// Rectangle body 
-	wxPen pen = dc.GetPen();		// Rectangle border
-	pen.SetStyle(wxPENSTYLE_SOLID);
-	pen.SetColour(wxColour(100, 150, 200));
-	dc.SetPen(pen);
-	dc.SetBrush(brush);
-	
+	wxPen pen = dc.GetPen();
+	for (int row = 0; row < maxHeight; row++) {
+		for (int col = 0; col < maxWidth; col++) {
+			pen.SetColour(bmpFile->getPixelColour((maxWidth * row) + col));
+			dc.SetPen(pen);
+			dc.DrawPoint(col, row);
+		}
+	}
 	
 
 	return;

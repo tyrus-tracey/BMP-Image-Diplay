@@ -22,6 +22,11 @@ wxSize myBMPFile::getImageSize()
     return wxSize(imageWidth, imageHeight);
 }
 
+wxColor myBMPFile::getPixelColour(const int index) const
+{
+    return pixelArray->at(index);
+}
+
 bool myBMPFile::readMetaData() {
     if (!readFileHeader() | !readInfoHeader()) {
         return false;
