@@ -58,7 +58,7 @@ void myPanel::drawImage(wxDC& dc)
 		for (int col = 0; col < maxWidth; col++) {
 			pen.SetColour(bmpFile->getPixelColour((maxWidth * row) + col));
 			dc.SetPen(pen);
-			dc.DrawPoint(col, row);
+			dc.DrawPoint(col, maxHeight - row - 1);
 		}
 	}
 	

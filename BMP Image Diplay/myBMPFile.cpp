@@ -51,9 +51,9 @@ void myBMPFile::readImageData()
     pixelArray = new vector<wxColor>(fileSize/3);
     vector<wxColor>::iterator index = pixelArray->begin();
     while (!Eof() || index != pixelArray->end()) {
-        Read(&Red, 1);
-        Read(&Green, 1);
         Read(&Blue, 1);
+        Read(&Green, 1);
+        Read(&Red, 1);
         Read(paddingBuffer, bytePadding);
         *index = wxColor(Red, Green, Blue);
         index++, pixelCount++;
