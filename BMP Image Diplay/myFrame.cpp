@@ -65,7 +65,7 @@ void myFrame::OnOpen(wxCommandEvent& event)
 	panel = new myPanel(this, openDialog.GetPath()); // Create a new panel with given wave file
 	SetClientSize(panel->GetSize());
 	wxSize test = panel->GetSize();
-	Fit();
+	//Fit();
 	Refresh(); //Redraw the frame
 	Update(); //Force painting of BMP immediately
 	Freeze(); //Image drawn; freeze to prevent repeat paint events.

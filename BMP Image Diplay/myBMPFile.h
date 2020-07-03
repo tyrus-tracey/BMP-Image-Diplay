@@ -20,7 +20,6 @@ private:
 	bool readInfoHeader();
 
 	unsigned int fileSize;
-	unsigned int imageSize;
 	unsigned int pixelOffset;
 	unsigned int headerSize;
 	int imageWidth;
