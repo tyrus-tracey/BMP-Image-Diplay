@@ -1,11 +1,16 @@
 #include "myFrame.h"
 #include <intrin.h>
 
+wxBEGIN_EVENT_TABLE(myFrame, wxFrame)
+EVT_KEY_DOWN(myFrame::OnKeyboardPress)
+END_EVENT_TABLE()
+
 // Using base class constructor, create a frame of a specified size in the app.
 myFrame::myFrame(wxSize& appDimensions)
-	: wxFrame(NULL, wxID_ANY, "BMP Image Program", wxPoint(0, 0), appDimensions), panel(NULL)
+	: wxFrame(NULL, wxID_ANY, "BMP Image Program", wxPoint(0, 0), appDimensions)
 {
 	createMenuBar();
+	Bind(wxEVT_KEY_DOWN, &myFrame::OnKeyboardPress, this, ID_KeyPress);
 	Show(true); // Display this frame
 }
 
@@ -44,9 +49,11 @@ void myFrame::OnAbout(wxCommandEvent& event) {
 }
 
 void myFrame::OnExit(wxCommandEvent& event) {
+	/*
 	if (panel != NULL) {
 		panel->Close(true); // Stop displaying
 	}
+	*/
 	Close(true); // Stop displaying
 }
 
@@ -54,7 +61,7 @@ void myFrame::OnExit(wxCommandEvent& event) {
 // Then, that panel will be attached to the frame using the frame's sizer.
 void myFrame::OnOpen(wxCommandEvent& event)
 {
-	delete panel; // Delete panel if one exists
+	delete panel; // delete if panel exists
 	wxFileDialog openDialog(this, ("Open a BMP file"), "", "", "BMP files (*.bmp)|*.bmp", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	if (openDialog.ShowModal() == wxID_CANCEL) { // If user cancels the dialog
@@ -63,10 +70,16 @@ void myFrame::OnOpen(wxCommandEvent& event)
 	}
 
 	panel = new myPanel(this, openDialog.GetPath()); // Create a new panel with given wave file
+
 	SetClientSize(panel->GetSize());
-	wxSize test = panel->GetSize();
-	//Fit();
 	Refresh(); //Redraw the frame
 	Update(); //Force painting of BMP immediately
-	Freeze(); //Image drawn; freeze to prevent repeat paint events.
+	//Freeze(); //Image drawn; freeze to prevent repeat paint events.
+}
+
+void myFrame::OnKeyboardPress(wxKeyEvent& event)
+{
+	panel->loadNext();
+	Refresh();
+	event.Skip();
 }

@@ -11,10 +11,11 @@ public:
 	myBMPFile(const wxString filepath);
 	~myBMPFile();
 	wxSize getImageSize();
-	wxColor getPixelColour(const int index) const;
+	vector<wxColor>* getPixelVector() const;
 	bool readMetaData();
 	void readImageData();
-	
+	vector<wxColor>* pixelVector;
+
 private:
 	bool readFileHeader();
 	bool readInfoHeader();
@@ -27,6 +28,5 @@ private:
 	unsigned int numberOfPlanes;
 	unsigned int bitsPerPixel;
 	unsigned int compressionFactor;
-	vector<wxColor> *pixelArray;
 };
 

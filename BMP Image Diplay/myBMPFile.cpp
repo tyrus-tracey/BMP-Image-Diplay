@@ -13,7 +13,7 @@ myBMPFile::myBMPFile(const wxString filepath)
 }
 
 myBMPFile::~myBMPFile() {
-    delete pixelArray;
+    delete pixelVector;
 }
 
 wxSize myBMPFile::getImageSize()
@@ -21,12 +21,10 @@ wxSize myBMPFile::getImageSize()
     return wxSize(imageWidth, imageHeight);
 }
 
-wxColor myBMPFile::getPixelColour(const int index) const
+
+vector<wxColor>* myBMPFile::getPixelVector() const
 {
-    if (index >= imageWidth * imageHeight) {
-        return wxColor("Black");
-    }
-    return pixelArray->at(index);
+    return pixelVector;
 }
 
 bool myBMPFile::readMetaData() {
@@ -55,15 +53,15 @@ void myBMPFile::readImageData()
     uint8_t Blue;
     unsigned int numberOfPixels = imageWidth * imageHeight;
     unsigned int bytesPerPixel = bitsPerPixel / 8;
-    pixelArray = new vector<wxColor>(numberOfPixels);
-    vector<wxColor>::iterator index = pixelArray->begin();
+    pixelVector = new vector<wxColor>(numberOfPixels);
+    vector<wxColor>::iterator index = pixelVector->begin();
     int columnCount = 1;
-    while (index != pixelArray->end()) {
+    while (index != pixelVector->end()) {
         Read(&Blue, 1);
         Read(&Green, 1);
         Read(&Red, 1);
         if (columnCount % imageWidth == 0) {
-            Read(paddingBuffer, bytePadding); //Bug : padding is done after every pixel, not row
+            Read(paddingBuffer, bytePadding);
         }
         *index = wxColor(Red, Green, Blue);
         index++, columnCount++;

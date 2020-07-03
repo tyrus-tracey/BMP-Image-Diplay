@@ -19,11 +19,14 @@ private:
 	void OnAbout(wxCommandEvent& event);
 	void OnExit(wxCommandEvent& event);
 	void OnOpen(wxCommandEvent& event);
+	void OnKeyboardPress(wxKeyEvent& event);
 	void createMenuBar();
 
 	myPanel* panel = NULL;
 	wxBoxSizer* frameSizer = NULL;
-	enum { ID_Open = 1 };
+	enum { ID_Open = 1 , ID_KeyPress = 2};
+
+	DECLARE_EVENT_TABLE();
 };
 
 

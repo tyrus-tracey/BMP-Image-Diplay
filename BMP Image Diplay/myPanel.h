@@ -16,14 +16,23 @@ public:
 	void resizeToImage();
 	void paintEvent(wxPaintEvent& event);
 	void drawImage(wxDC& dc);
+	void loadNext();
+	
 	myBMPFile* getFile();
 
 private:
-
+	void loadNormal();
+	void loadGrayscale();
+	void loadDarker();
+	void loadVivid();
+	wxColor getPixelColor(const int index) const;
 	myBMPFile* bmpFile;
+	vector<wxColor> image;
 	wxSize maxSize;
 	int	maxHeight;
 	int maxWidth;
+	const enum display{ NORMAL = 1, GRAYSCALE = 2, DARK = 3, VIVID = 4 };
+	int displayStatus;
 
 	DECLARE_EVENT_TABLE();
 };
