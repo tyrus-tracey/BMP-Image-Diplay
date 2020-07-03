@@ -2,7 +2,7 @@
 #include <intrin.h>
 
 wxBEGIN_EVENT_TABLE(myFrame, wxFrame)
-EVT_KEY_DOWN(myFrame::OnKeyboardPress)
+EVT_KEY_DOWN(myFrame::OnKeyboardPress) // Bind a keypress event to my event handler
 END_EVENT_TABLE()
 
 // Using base class constructor, create a frame of a specified size in the app.
@@ -44,21 +44,15 @@ myPanel* myFrame::getPanel()
 }
 
 void myFrame::OnAbout(wxCommandEvent& event) {
-	wxMessageBox("This is a wxWidgets Hello World example",
-		"About Hello World", wxOK | wxICON_INFORMATION);
+	wxMessageBox("Please select a BMP File from the top right menu. Then, cycle between pages with any key.",
+		"How to Use", wxOK | wxICON_INFORMATION);
 }
 
 void myFrame::OnExit(wxCommandEvent& event) {
-	/*
-	if (panel != NULL) {
-		panel->Close(true); // Stop displaying
-	}
-	*/
 	Close(true); // Stop displaying
 }
 
 // If user selects a BMP file, a new panel will be created using that file.
-// Then, that panel will be attached to the frame using the frame's sizer.
 void myFrame::OnOpen(wxCommandEvent& event)
 {
 	delete panel; // delete if panel exists
@@ -68,17 +62,17 @@ void myFrame::OnOpen(wxCommandEvent& event)
 		wxMessageBox("No file was chosen.");
 		return;
 	}
-
-	panel = new myPanel(this, openDialog.GetPath()); // Create a new panel with given wave file
+	// Create a new panel with given BMP file with the frame as the parent
+	panel = new myPanel(this, openDialog.GetPath()); 
 
 	SetClientSize(panel->GetSize());
 	Refresh(); //Redraw the frame
 	Update(); //Force painting of BMP immediately
-	//Freeze(); //Image drawn; freeze to prevent repeat paint events.
 }
 
 void myFrame::OnKeyboardPress(wxKeyEvent& event)
 {
+	wxStaticText loadIndicator(this, wxID_ANY, "---");
 	panel->loadNext();
 	Refresh();
 	event.Skip();

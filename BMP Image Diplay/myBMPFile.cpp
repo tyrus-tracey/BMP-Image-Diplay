@@ -27,6 +27,7 @@ vector<wxColor>* myBMPFile::getPixelVector() const
     return pixelVector;
 }
 
+//High level function combining reads of file and info header
 bool myBMPFile::readMetaData() {
     if (!readFileHeader() | !readInfoHeader()) {
         return false;
@@ -34,8 +35,8 @@ bool myBMPFile::readMetaData() {
     return true;
 }
 
-// Create a temporary vector of enough size to store pixel data
-// Then allocate a color vector of exact pixel count and copy.
+// Create a vector to store RGB data, using wxColor class
+// Calculate byte padding, then begin reading data from BMP file.
 void myBMPFile::readImageData()
 {
     //Calculate size of byte padding;
@@ -55,12 +56,13 @@ void myBMPFile::readImageData()
     unsigned int bytesPerPixel = bitsPerPixel / 8;
     pixelVector = new vector<wxColor>(numberOfPixels);
     vector<wxColor>::iterator index = pixelVector->begin();
-    int columnCount = 1;
+    int columnCount = 1; // determines when to apply byte padding
+
     while (index != pixelVector->end()) {
         Read(&Blue, 1);
         Read(&Green, 1);
         Read(&Red, 1);
-        if (columnCount % imageWidth == 0) {
+        if (columnCount % imageWidth == 0) { // end of pixel row
             Read(paddingBuffer, bytePadding);
         }
         *index = wxColor(Red, Green, Blue);
@@ -70,6 +72,7 @@ void myBMPFile::readImageData()
     Close();
 }
 
+// Reads initial file header of BMP file. Returns true if successful.
 bool myBMPFile::readFileHeader()
 {
     char charBuff[3];
@@ -88,6 +91,7 @@ bool myBMPFile::readFileHeader()
     return true;
 }
 
+// Reads info header of BMP file. Returns true if successful.
 bool myBMPFile::readInfoHeader()
 {
     int junkBuffer;
@@ -103,7 +107,7 @@ bool myBMPFile::readInfoHeader()
     Read(&numberOfPlanes, 2);
     Read(&bitsPerPixel, 2);
     Read(&compressionFactor, 4);
-    Read(&junkBuffer, 4);
+    Read(&junkBuffer, 4); // Compressed image size - not necessary
     Read(&junkBuffer, 4); // X px per meter - not necessary
     Read(&junkBuffer, 4); // Y px per meter - not necessary
     Read(&junkBuffer, 4); // Total colors - not used in 24bit BMP
