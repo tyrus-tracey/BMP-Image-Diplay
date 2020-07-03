@@ -55,6 +55,7 @@ void myFrame::OnExit(wxCommandEvent& event) {
 // If user selects a BMP file, a new panel will be created using that file.
 void myFrame::OnOpen(wxCommandEvent& event)
 {
+
 	delete panel; // delete if panel exists
 	wxFileDialog openDialog(this, ("Open a BMP file"), "", "", "BMP files (*.bmp)|*.bmp", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
@@ -66,6 +67,7 @@ void myFrame::OnOpen(wxCommandEvent& event)
 	panel = new myPanel(this, openDialog.GetPath()); 
 
 	SetClientSize(panel->GetSize());
+
 	Refresh(); //Redraw the frame
 	Update(); //Force painting of BMP immediately
 }
