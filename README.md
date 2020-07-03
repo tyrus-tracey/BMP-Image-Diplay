@@ -1,4 +1,5 @@
 # BMP-Image-Diplay
+Displays a BMP file, with a grayscale, dark, and vivid version.
 
 Hello,
 
